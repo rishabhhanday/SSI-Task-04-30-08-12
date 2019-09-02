@@ -1,6 +1,7 @@
 package details.employee;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
@@ -13,6 +14,76 @@ public class Employee {
 	String dept;
 
 	static Scanner sc = new Scanner(System.in);
+
+	static void sorting(String field, String order, Employee[] emp) {
+		if (field.equals("name") && order.equals("asc")) {
+
+			Arrays.sort(emp, new Comparator<Employee>() {
+
+				@Override
+				public int compare(Employee e1, Employee e2) {
+
+					return e1.ename.compareTo(e2.ename);
+				}
+
+			});
+			for (Employee employee : emp) {
+				System.out.println(employee.eno + " " + employee.ename + " " + employee.salary + " " + employee.desg
+						+ " " + employee.dept);
+
+			}
+
+		} else if (field.equals("salary") && order.equals("asc")) {
+			Arrays.sort(emp, new Comparator<Employee>() {
+
+				@Override
+				public int compare(Employee e1, Employee e2) {
+
+					return e1.salary - e2.salary;
+				}
+
+			});
+			for (Employee employee : emp) {
+				System.out.println(employee.eno + " " + employee.ename + " " + employee.salary + " " + employee.desg
+						+ " " + employee.dept);
+
+			}
+
+		} else if (field.equals("salary") && order.equals("desc")) {
+			Arrays.sort(emp, new Comparator<Employee>() {
+
+				@Override
+				public int compare(Employee e1, Employee e2) {
+
+					return e2.salary - e1.salary;
+				}
+
+			});
+			for (Employee employee : emp) {
+				System.out.println(employee.eno);
+
+			}
+		}
+
+		else if (field.equals("name") && order.equals("desc")) {
+			Arrays.sort(emp, new Comparator<Employee>() {
+
+				@Override
+				public int compare(Employee e1, Employee e2) {
+
+					return e2.ename.compareTo(e1.ename);
+				}
+
+			});
+			for (Employee employee : emp) {
+				System.out.println(employee.eno + " " + employee.ename + " " + employee.salary + " " + employee.desg
+						+ " " + employee.dept);
+
+			}
+
+		}
+
+	}
 
 	public void addEmp() {
 
@@ -34,7 +105,7 @@ public class Employee {
 		HashMap<Integer, Employee> hm = new HashMap<>();
 		outer: while (true) {
 			System.out.println(
-					"1. Add Emp \n 2.View All Emp \n 3.Remove Emp \n 4. Clear Data \n 5. Change Sal \n 6.Search Emp \n 7. View dept Wise \n 8. Exit");
+					"1. Add Emp \n 2.View All Emp \n 3.Remove Emp \n 4. Clear Data \n 5. Change Sal \n 6.Search Emp \n 7. View dept Wise \n 8. View Sorted Employees");
 			int option = sc.nextInt();
 			switch (option) {
 			case 1:
@@ -95,26 +166,55 @@ public class Employee {
 			case 6:
 				System.out.println("enter eno to search");
 				int empno1 = sc.nextInt();
-			
+
 				Employee e3 = hm.get(empno1);
 				System.out.println(e3.eno + " " + e3.ename + " " + e3.salary + " " + e3.desg + " " + e3.dept);
 				break;
 			case 7:
-				
+
 				System.out.println("enter dept to search all employee");
 				String deptSearch = sc.next();
-				 for(Employee empl :hm.values()){
-					 if(empl.dept.equals(deptSearch)){
-						 System.out.println(empl.eno + " " + empl.ename + " " + empl.salary + " " + empl.desg + " " + empl.dept);
-						 
-						 
-					 }
-					 
-				 }
-				 break;
-				 
+				for (Employee empl : hm.values()) {
+					if (empl.dept.equals(deptSearch)) {
+						System.out.println(
+								empl.eno + " " + empl.ename + " " + empl.salary + " " + empl.desg + " " + empl.dept);
+
+					}
+
+				}
+				break;
 
 			case 8:
+				Employee emp[] = new Employee[hm.size()];
+				int i = 0;
+				for (Employee employee : hm.values()) {
+					emp[i++] = employee;
+
+				}
+
+				System.out.println("Enter sorting order : salary or name or default(on emp no)");
+				String field = sc.next();
+				System.out.println("Enter asc or desc ");
+				String order = sc.next();
+				if (!field.equals("default"))
+					sorting(field, order, emp);
+				else {
+
+					Arrays.sort(emp, new Comparator<Employee>() {
+
+						@Override
+						public int compare(Employee e1, Employee e2) {
+
+							return e2.eno - e1.eno;
+						}
+
+					});
+					for (Employee employee : emp) {
+						System.out.println(employee.eno+ " " +employee.ename+" "+employee.salary +" "+employee.desg + " "+employee.dept  );
+
+					}
+				}
+
 				break outer;
 
 			}
